@@ -1,22 +1,27 @@
-#include <windows.h>
-#include <glut.h>
-#include "Grid.h"
+#include <iostream>
+#include <string>
+
+#include "grid.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 800
-#define WINDOW_TITLE "PacMan - Hassan : Hammam"
+#define WINDOW_TITLE "PacMan - Hassan & Hammam"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-	glutCreateWindow(WINDOW_TITLE);
-	Grid grid;
-	glutDisplayFunc(&(grid.display_callback));
-	glutReshapeFunc(&(grid.reshape_callback));
-	glutMainLoop();
+	grid g("maze.txt");
+	int n = g.get_height();
+	int m = g.get_width();
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < m; ++j) {
+			object tmp = g.get_object(i, j);
+			cout << tmp.get_object_type();
+		}
+		cout << endl;
+	}
+	cin.get();
+	cin.get();
 	return 0;
 }
 
