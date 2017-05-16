@@ -17,12 +17,14 @@ static float wallSide = 0.25;
 static float foodRadius = 0.05;
 static float enemyRadius = 0.1;
 grid g("maze.txt");
+float charMoveX = 0;
+float charMoveY = 0;
 
 void drawCharacter(GLfloat x, GLfloat y) {
 	glBegin(GL_POLYGON);
 	glColor3f(1.0, 1.0, 0.0);
 	for (double i = 0; i < 2 * PI; i += PI / 50)
-		glVertex3f(x + (cos(i) * characterRadius), y + (sin(i) * characterRadius), 0.0);
+		glVertex3f(x + charMoveX + (cos(i) * characterRadius), y + charMoveY + (sin(i) * characterRadius), 0.0);
 	glEnd();
 }
 
@@ -111,6 +113,35 @@ void display() {
 	glutSwapBuffers();
 }
 
+void keyboard(unsigned char key, int x, int y) {
+	switch (key)
+	{
+	case 'w':
+		charMoveY += 0.05;
+		glutPostRedisplay();
+		break;
+	case 's':
+		charMoveY -= 0.05;
+		glutPostRedisplay();
+		break;
+	case 'a':
+		charMoveX -= 0.05;
+		glutPostRedisplay();
+		break;
+	case 'd':
+		charMoveX += 0.05;
+		glutPostRedisplay();
+		break;
+	case 27:
+		exit(0);
+	default:
+		break;
+	}
+}
+
+void idle() {
+
+}
 
 int main(int argc, char* argv[]) {
 	int n = g.get_height();
@@ -133,6 +164,8 @@ int main(int argc, char* argv[]) {
 	gluOrtho2D(0, g.get_width(), 0, g.get_height());
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
+	glutIdleFunc(idle);
+	glutKeyboardFunc(keyboard);
 	glutMainLoop();
 	return 0;
 }
