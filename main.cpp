@@ -14,6 +14,7 @@ using namespace std;
 
 static float sunRadius = 0.1;
 static float wallSide = 0.2;
+static float foodRadius = 0.05;
 
 void drawSun() {
 	GLfloat black[] = { 0.0, 0.0, 0.0, 1.0 };
@@ -25,7 +26,7 @@ void drawSun() {
 	glNormal3f(1, 1, 1);
 
 	glBegin(GL_POLYGON);
-	glColor3f(0.2, 0.3, 0.5);
+	glColor3f(1.0, 1.0, 0.0);
 	for (double i = 0; i < 2 * PI; i += PI / 50)
 		glVertex3f((cos(i) * sunRadius), sin(i) * sunRadius, 0.0);
 	glEnd();
@@ -38,6 +39,14 @@ void drawWall(GLfloat x, GLfloat y) {
 	glVertex3f(x, y + wallSide, 0.0);
 	glVertex3f(x + wallSide, y + wallSide, 0.0);
 	glVertex3f(x + wallSide, y, 0.0);
+	glEnd();
+}
+
+void drawFood(GLfloat x, GLfloat y) {
+	glBegin(GL_POLYGON);
+	glColor3f(1.0, 0.5, 0.0);
+	for (double i = 0; i < 2 * PI; i += PI / 50)
+		glVertex3f(x + (cos(i) * foodRadius), y + (sin(i) * foodRadius), 0.0);
 	glEnd();
 }
 
@@ -60,6 +69,7 @@ void display() {
 	glPushMatrix();
 	drawSun();
 	drawWall(0.5, 0.5);
+	drawFood(-0.5, 0.5);
 	glPopMatrix();
 
 	glFlush();
