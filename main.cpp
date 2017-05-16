@@ -5,7 +5,7 @@
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 800
-#define WINDOW_TITLE "PacMan - Hassan & Hammam"
+#define WINDOW_TITLE "Pacman - Hassan & Hammam & Magdy"
 
 using namespace std;
 
