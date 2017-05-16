@@ -64,8 +64,8 @@ void reshape(int w, int h) {
 GLfloat getCoordinate(int c, int dim) {
 	if (c == dim / 2) return 0;
 	float diff = 2.0 / (dim / 2);
-	c = c < (dim / 2) ? c : c - (dim / 2);
-	GLfloat place = 2.0 - (c * diff);
+	int t = c < (dim / 2) ? c : (dim / 2) - (c - (dim / 2));
+	GLfloat place = 2.0 - (t * diff);
 	place = c < (dim / 2) ? -1 * place : place;
 	return place;
 }
@@ -87,27 +87,22 @@ void display() {
 			case EMPTY_OBJECT:
 				break;
 			case WALL:
-				drawWall(getCoordinate(j, g.get_width()), getCoordinate(i, g.get_height()));
+				drawWall(getCoordinate(j, g.get_height() - 1), -1 * getCoordinate(i, g.get_width() - 1));
 				break;
 			case COIN:
+				drawFood(getCoordinate(j, g.get_height() - 1), -1 * getCoordinate(i, g.get_width() - 1));
 				break;
 			case PLAYER:
+				drawCharacter(getCoordinate(j, g.get_height() - 1), -1 * getCoordinate(i, g.get_width() - 1));
 				break;
 			case ENEMY:
+				drawEnemy(getCoordinate(j, g.get_height() - 1), -1 * getCoordinate(i, g.get_width() - 1));
 				break;
 			default:
 				break;
 			};
 		}
 	}
-
-	drawCharacter(0.0, 0.0);
-	drawWall(2.0, 2.0);
-	drawWall(-2.0, 2.0);
-	drawWall(-2.0, -2.0);
-	drawWall(2.0, -2.0);
-	drawFood(0.6, 0.5);
-	drawEnemy(0.5, 0.5);
 
 	glPopMatrix();
 
@@ -119,6 +114,8 @@ void display() {
 int main(int argc, char* argv[]) {
 	int n = g.get_height();
 	int m = g.get_width();
+	cout << g.get_width() << endl;
+	cout << g.get_height() << endl;
 	for (int i = 0; i < n; ++i) {
 		for (int j = 0; j < m; ++j) {
 			object tmp = g.get_object(i, j);
