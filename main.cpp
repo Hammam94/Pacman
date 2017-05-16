@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-
 #include "glut.h"
 #include "grid.h"
 
@@ -16,16 +15,9 @@ static float characterRadius = 0.1;
 static float wallSide = 0.2;
 static float foodRadius = 0.05;
 static float enemyRadius = 0.1;
+grid g("maze.txt");
 
 void drawCharacter(GLfloat x, GLfloat y) {
-	GLfloat black[] = { 0.0, 0.0, 0.0, 1.0 };
-	GLfloat color[] = { 255, 223, 0.0, 1.0 };
-	glMaterialfv(GL_FRONT, GL_AMBIENT, color);
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, black);
-	glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-	glNormal3f(1, 1, 1);
-
 	glBegin(GL_POLYGON);
 	glColor3f(1.0, 1.0, 0.0);
 	for (double i = 0; i < 2 * PI; i += PI / 50)
@@ -76,19 +68,20 @@ void display() {
 	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 	glPushMatrix();
+
 	drawCharacter(0.0, 0.0);
-	drawWall(0.5, 0.5);
-	drawFood(-0.5, 0.5);
-	drawEnemy(-0.5, -0.5);
+	drawWall(2.0, 2.0);
+	drawFood(0.6, 0.5);
+	drawEnemy(0.5, 0.5);
+
 	glPopMatrix();
 
 	glFlush();
-	//glutSwapBuffers();
+	glutSwapBuffers();
 }
 
 
 int main(int argc, char* argv[]) {
-	grid g("maze.txt");
 	int n = g.get_height();
 	int m = g.get_width();
 	for (int i = 0; i < n; ++i) {
@@ -99,10 +92,11 @@ int main(int argc, char* argv[]) {
 		cout << endl;
 	}
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
+	gluOrtho2D(0, g.get_width(), 0, g.get_height());
 	glutCreateWindow(WINDOW_TITLE);
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);

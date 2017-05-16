@@ -159,7 +159,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="character.h" />
-    <ClInclude Include="character_type_enum.h" />
     <ClInclude Include="stationary_object.h" />
     <ClInclude Include="event_handler.h" />
     <ClInclude Include="grid.h" />

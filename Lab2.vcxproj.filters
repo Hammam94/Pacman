@@ -41,9 +41,6 @@
     <ClInclude Include="object.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="character_type_enum.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="stationary_object_type_enum.h">
       <Filter>Source Files</Filter>
     </ClInclude>
