@@ -47,5 +47,8 @@
     <ClInclude Include="character.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="object_type.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

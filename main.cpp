@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "glut.h"
+#include "object_type.h"
 #include "grid.h"
 
 #define WINDOW_WIDTH 800
@@ -28,10 +29,10 @@ void drawCharacter(GLfloat x, GLfloat y) {
 void drawWall(GLfloat x, GLfloat y) {
 	glBegin(GL_POLYGON);
 	glColor3f(0.2, 0.3, 0.5);
-	glVertex3f(x, y, 0.0);
-	glVertex3f(x, y + wallSide, 0.0);
-	glVertex3f(x + wallSide, y + wallSide, 0.0);
-	glVertex3f(x + wallSide, y, 0.0);
+	glVertex3f(x - wallSide / 2, y - wallSide / 2, 0.0);
+	glVertex3f(x - wallSide / 2, y + wallSide / 2, 0.0);
+	glVertex3f(x + wallSide / 2, y + wallSide / 2, 0.0);
+	glVertex3f(x + wallSide / 2, y - wallSide / 2, 0.0);
 	glEnd();
 }
 
@@ -60,6 +61,15 @@ void reshape(int w, int h) {
 	glLoadIdentity();
 }
 
+GLfloat getCoordinate(int c, int dim) {
+	if (c == dim / 2) return 0;
+	float diff = 2.0 / (dim / 2);
+	c = c < (dim / 2) ? c : c - (dim / 2);
+	GLfloat place = 2.0 - (c * diff);
+	place = c < (dim / 2) ? -1 * place : place;
+	return place;
+}
+
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -69,8 +79,33 @@ void display() {
 
 	glPushMatrix();
 
+	for (int i = 0; i < g.get_height(); ++i) {
+		for (int j = 0; j < g.get_width(); ++j) {
+			object obj = g.get_object(i, j);
+			switch (obj.get_object_type())
+			{
+			case EMPTY_OBJECT:
+				break;
+			case WALL:
+				drawWall(getCoordinate(j, g.get_width()), getCoordinate(i, g.get_height()));
+				break;
+			case COIN:
+				break;
+			case PLAYER:
+				break;
+			case ENEMY:
+				break;
+			default:
+				break;
+			};
+		}
+	}
+
 	drawCharacter(0.0, 0.0);
 	drawWall(2.0, 2.0);
+	drawWall(-2.0, 2.0);
+	drawWall(-2.0, -2.0);
+	drawWall(2.0, -2.0);
 	drawFood(0.6, 0.5);
 	drawEnemy(0.5, 0.5);
 
@@ -95,11 +130,11 @@ int main(int argc, char* argv[]) {
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+	glutCreateWindow(WINDOW_TITLE);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	gluOrtho2D(0, g.get_width(), 0, g.get_height());
-	glutCreateWindow(WINDOW_TITLE);
-	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);
+	glutReshapeFunc(reshape);
 	glutMainLoop();
 	return 0;
 }
