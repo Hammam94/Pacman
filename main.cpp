@@ -13,7 +13,7 @@
 using namespace std;
 
 static float characterRadius = 0.1;
-static float wallSide = 0.2;
+static float wallSide = 0.25;
 static float foodRadius = 0.05;
 static float enemyRadius = 0.1;
 grid g("maze.txt");
