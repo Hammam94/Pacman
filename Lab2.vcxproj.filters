@@ -24,12 +24,6 @@
     <ClCompile Include="grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="character.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stationary_object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,9 +33,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="grid.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="character.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="stationary_object.h">
@@ -54,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="stationary_object_type_enum.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="character.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

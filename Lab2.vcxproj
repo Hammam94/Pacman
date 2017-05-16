@@ -152,8 +152,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="character.cpp" />
-    <ClCompile Include="stationary_object.cpp" />
     <ClCompile Include="event_handler.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="main.cpp" />

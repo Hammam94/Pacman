@@ -8,12 +8,12 @@
 #define WINDOW_HEIGHT 800
 #define WINDOW_TITLE "Pacman - Hassan & Hammam & Magdy"
 
-
 #define PI 3.1415926535897932384626433832795
 
 using namespace std;
 
 static float sunRadius = 0.1;
+static float wallSide = 0.2;
 
 void drawSun() {
 	GLfloat black[] = { 0.0, 0.0, 0.0, 1.0 };
@@ -31,8 +31,17 @@ void drawSun() {
 	glEnd();
 }
 
-void reshape(int w, int h)
-{
+void drawWall(GLfloat x, GLfloat y) {
+	glBegin(GL_POLYGON);
+	glColor3f(0.2, 0.3, 0.5);
+	glVertex3f(x, y, 0.0);
+	glVertex3f(x, y + wallSide, 0.0);
+	glVertex3f(x + wallSide, y + wallSide, 0.0);
+	glVertex3f(x + wallSide, y, 0.0);
+	glEnd();
+}
+
+void reshape(int w, int h) {
 	glViewport(0, 0, (GLsizei)WINDOW_WIDTH, (GLsizei)WINDOW_HEIGHT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -48,14 +57,9 @@ void display() {
 	glLoadIdentity();
 	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
-	//draw Sun
 	glPushMatrix();
 	drawSun();
-	/*
-	drawSun();
-	drawSun();
-	drawSun();
-	*/
+	drawWall(0.5, 0.5);
 	glPopMatrix();
 
 	glFlush();
@@ -79,7 +83,7 @@ int main(int argc, char* argv[]) {
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glutCreateWindow("OpenGL - Draw Circle");
+	glutCreateWindow(WINDOW_TITLE);
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);
 	glutMainLoop();
