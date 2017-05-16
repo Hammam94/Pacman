@@ -12,11 +12,12 @@
 
 using namespace std;
 
-static float sunRadius = 0.1;
+static float characterRadius = 0.1;
 static float wallSide = 0.2;
 static float foodRadius = 0.05;
+static float enemyRadius = 0.1;
 
-void drawSun() {
+void drawCharacter(GLfloat x, GLfloat y) {
 	GLfloat black[] = { 0.0, 0.0, 0.0, 1.0 };
 	GLfloat color[] = { 255, 223, 0.0, 1.0 };
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color);
@@ -28,7 +29,7 @@ void drawSun() {
 	glBegin(GL_POLYGON);
 	glColor3f(1.0, 1.0, 0.0);
 	for (double i = 0; i < 2 * PI; i += PI / 50)
-		glVertex3f((cos(i) * sunRadius), sin(i) * sunRadius, 0.0);
+		glVertex3f(x + (cos(i) * characterRadius), y + (sin(i) * characterRadius), 0.0);
 	glEnd();
 }
 
@@ -50,6 +51,14 @@ void drawFood(GLfloat x, GLfloat y) {
 	glEnd();
 }
 
+void drawEnemy(GLfloat x, GLfloat y) {
+	glBegin(GL_POLYGON);
+	glColor3f(1.0, 1.0, 1.0);
+	for (double i = 0; i < 2 * PI; i += PI / 50)
+		glVertex3f(x + (cos(i) * enemyRadius), y + (sin(i) * enemyRadius), 0.0);
+	glEnd();
+}
+
 void reshape(int w, int h) {
 	glViewport(0, 0, (GLsizei)WINDOW_WIDTH, (GLsizei)WINDOW_HEIGHT);
 	glMatrixMode(GL_PROJECTION);
@@ -67,9 +76,10 @@ void display() {
 	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 	glPushMatrix();
-	drawSun();
+	drawCharacter(0.0, 0.0);
 	drawWall(0.5, 0.5);
 	drawFood(-0.5, 0.5);
+	drawEnemy(-0.5, -0.5);
 	glPopMatrix();
 
 	glFlush();
