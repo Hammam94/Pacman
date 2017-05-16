@@ -62,6 +62,7 @@ void reshape(int w, int h) {
 }
 
 GLfloat getCoordinate(int c, int dim) {
+	dim = dim - 1;
 	if (c == dim / 2) return 0;
 	float diff = 2.0 / (dim / 2);
 	int t = c < (dim / 2) ? c : (dim / 2) - (c - (dim / 2));
@@ -87,16 +88,16 @@ void display() {
 			case EMPTY_OBJECT:
 				break;
 			case WALL:
-				drawWall(getCoordinate(j, g.get_height() - 1), -1 * getCoordinate(i, g.get_width() - 1));
+				drawWall(getCoordinate(j, g.get_height()), -1 * getCoordinate(i, g.get_width()));
 				break;
 			case COIN:
-				drawFood(getCoordinate(j, g.get_height() - 1), -1 * getCoordinate(i, g.get_width() - 1));
+				drawFood(getCoordinate(j, g.get_height()), -1 * getCoordinate(i, g.get_width()));
 				break;
 			case PLAYER:
-				drawCharacter(getCoordinate(j, g.get_height() - 1), -1 * getCoordinate(i, g.get_width() - 1));
+				drawCharacter(getCoordinate(j, g.get_height()), -1 * getCoordinate(i, g.get_width()));
 				break;
 			case ENEMY:
-				drawEnemy(getCoordinate(j, g.get_height() - 1), -1 * getCoordinate(i, g.get_width() - 1));
+				drawEnemy(getCoordinate(j, g.get_height()), -1 * getCoordinate(i, g.get_width()));
 				break;
 			default:
 				break;
