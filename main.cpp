@@ -129,29 +129,33 @@ void display() {
 }
 
 void keyboard(unsigned char key, int x, int y) {
+	int oldX = charPosX;
+	int oldY = charPosY;
 	switch (key)
 	{
 	case 'w':
 		charPosX -= step;
-		glutPostRedisplay();
 		break;
 	case 's':
 		charPosX += step;
-		glutPostRedisplay();
 		break;
 	case 'a':
 		charPosY -= step;
-		glutPostRedisplay();
 		break;
 	case 'd':
 		charPosY += step;
-		glutPostRedisplay();
 		break;
 	case 27:
 		exit(0);
 	default:
 		break;
 	}
+	object tmp = g.get_object(charPosX, charPosY);
+	if (tmp.get_object_type() == WALL) {
+		charPosX = oldX;
+		charPosY = oldY;
+	}
+	glutPostRedisplay();
 }
 
 void idle() {
