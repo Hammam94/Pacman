@@ -95,38 +95,39 @@ void display() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+	if (lives > 0) {
+		glPushMatrix();
 
-	glPushMatrix();
-
-	int index = 0;
-	for (int i = 0; i < g.get_height(); ++i) {
-		for (int j = 0; j < g.get_width(); ++j) {
-			object obj = g.get_object(i, j);
-			switch (obj.get_object_type())
-			{
-			case EMPTY_OBJECT:
-				break;
-			case WALL:
-				drawWall(getCoordinate(j, g.get_height()), -1 * getCoordinate(i, g.get_width()));
-				break;
-			case COIN:
-				drawFood(getCoordinate(j, g.get_height()), -1 * getCoordinate(i, g.get_width()));
-				break;
-			case PLAYER:
-				drawCharacter(getCoordinate(charPosY, g.get_height()), -1 * getCoordinate(charPosX, g.get_width()));
-				break;
-			case ENEMY:
-				drawEnemy(getCoordinate(enemyPosY[index], g.get_height()), -1 * getCoordinate(enemyPosX[index], g.get_width()));
-				index++;
-				index %= 3;
-				break;
-			default:
-				break;
-			};
+		int index = 0;
+		for (int i = 0; i < g.get_height(); ++i) {
+			for (int j = 0; j < g.get_width(); ++j) {
+				object obj = g.get_object(i, j);
+				switch (obj.get_object_type())
+				{
+				case EMPTY_OBJECT:
+					break;
+				case WALL:
+					drawWall(getCoordinate(j, g.get_height()), -1 * getCoordinate(i, g.get_width()));
+					break;
+				case COIN:
+					drawFood(getCoordinate(j, g.get_height()), -1 * getCoordinate(i, g.get_width()));
+					break;
+				case PLAYER:
+					drawCharacter(getCoordinate(charPosY, g.get_height()), -1 * getCoordinate(charPosX, g.get_width()));
+					break;
+				case ENEMY:
+					drawEnemy(getCoordinate(enemyPosY[index], g.get_height()), -1 * getCoordinate(enemyPosX[index], g.get_width()));
+					index++;
+					index %= 3;
+					break;
+				default:
+					break;
+				};
+			}
 		}
-	}
 
-	glPopMatrix();
+		glPopMatrix();
+	}
 
 	glFlush();
 	glutSwapBuffers();
