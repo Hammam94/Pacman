@@ -164,12 +164,14 @@ void keyboard(unsigned char key, int x, int y) {
 		tmp.set_object_type(EMPTY_OBJECT);
 		g.set_object(charPosX, charPosY, tmp);
 		score++;
+		cout << "Score = " << score << endl;
 	}
 	for (int i = 0; i < enemyPosX.size(); i++) {
 		if (charPosX == enemyPosX[i] && charPosY == enemyPosY[i]) {
 			lives--;
 			charPosX = charInitX;
 			charPosY = charInitY;
+			cout << "Lives = " << lives << endl;
 		}
 	}
 	glutPostRedisplay();
@@ -177,7 +179,7 @@ void keyboard(unsigned char key, int x, int y) {
 
 void idle() {
 	timer += 0.00000025;
-	if (timer > 1.0) {
+	if (timer > 3.0) {
 		for (int i = 0; i < enemyPosX.size(); i++) {
 			int r = (rand() * 15) % 4;
 			if (enemyPosX[i] + dx[r] < 0 || enemyPosX[i] + dx[r] >= g.get_width()) {
@@ -221,6 +223,8 @@ int main(int argc, char* argv[]) {
 		}
 		cout << endl;
 	}
+	cout << "Lives = " << lives << endl;
+	cout << "Score = " << score << endl;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(0, 0);
