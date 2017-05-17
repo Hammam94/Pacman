@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include "glut.h"
 #include "object_type.h"
 #include "grid.h"
@@ -16,9 +17,17 @@ static float characterRadius = 0.1;
 static float wallSide = 0.25;
 static float foodRadius = 0.05;
 static float enemyRadius = 0.1;
+static double timer = 0.0;
+float step;
 grid g("maze.txt");
 float charMoveX = 0;
 float charMoveY = 0;
+
+int dx[] = {0, 0, 1, -1};
+int dy[] = { 1, -1, 0, 0 };
+
+vector<int> enemyPosX;
+vector<int> enemyPosY;
 
 void drawCharacter(GLfloat x, GLfloat y) {
 	glBegin(GL_POLYGON);
@@ -49,8 +58,9 @@ void drawFood(GLfloat x, GLfloat y) {
 void drawEnemy(GLfloat x, GLfloat y) {
 	glBegin(GL_POLYGON);
 	glColor3f(1.0, 1.0, 1.0);
-	for (double i = 0; i < 2 * PI; i += PI / 50)
+	for (double i = 0; i < 2 * PI; i += PI / 50) {
 		glVertex3f(x + (cos(i) * enemyRadius), y + (sin(i) * enemyRadius), 0.0);
+	}
 	glEnd();
 }
 
@@ -67,6 +77,7 @@ GLfloat getCoordinate(int c, int dim) {
 	dim = dim - 1;
 	if (c == dim / 2) return 0;
 	float diff = 2.0 / (dim / 2);
+	step = diff;
 	int t = c < (dim / 2) ? c : (dim / 2) - (c - (dim / 2));
 	GLfloat place = 2.0 - (t * diff);
 	place = c < (dim / 2) ? -1 * place : place;
@@ -82,6 +93,7 @@ void display() {
 
 	glPushMatrix();
 
+	int index = 0;
 	for (int i = 0; i < g.get_height(); ++i) {
 		for (int j = 0; j < g.get_width(); ++j) {
 			object obj = g.get_object(i, j);
@@ -99,7 +111,9 @@ void display() {
 				drawCharacter(getCoordinate(j, g.get_height()), -1 * getCoordinate(i, g.get_width()));
 				break;
 			case ENEMY:
-				drawEnemy(getCoordinate(j, g.get_height()), -1 * getCoordinate(i, g.get_width()));
+				drawEnemy(getCoordinate(enemyPosY[index], g.get_height()), -1 * getCoordinate(enemyPosX[index], g.get_width()));
+				index++;
+				index %= 3;
 				break;
 			default:
 				break;
@@ -117,19 +131,19 @@ void keyboard(unsigned char key, int x, int y) {
 	switch (key)
 	{
 	case 'w':
-		charMoveY += 0.05;
+		charMoveY += step;
 		glutPostRedisplay();
 		break;
 	case 's':
-		charMoveY -= 0.05;
+		charMoveY -= step;
 		glutPostRedisplay();
 		break;
 	case 'a':
-		charMoveX -= 0.05;
+		charMoveX -= step;
 		glutPostRedisplay();
 		break;
 	case 'd':
-		charMoveX += 0.05;
+		charMoveX += step;
 		glutPostRedisplay();
 		break;
 	case 27:
@@ -140,7 +154,27 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void idle() {
-
+	timer += 0.00000025;
+	if (timer > 1.0) {
+		for (int i = 0; i < enemyPosX.size(); i++) {
+			int r = (rand() * 15) % 4;
+			if (enemyPosX[i] + dx[r] < 0 || enemyPosX[i] + dx[r] >= g.get_width()) {
+				continue;
+			}
+			if (enemyPosY[i] + dy[r] < 0 || enemyPosY[i] + dy[r] >= g.get_height()) {
+				continue;
+			}
+			object obj = g.get_object(enemyPosX[i] + dx[r], enemyPosY[i] + dy[r]);
+			if (obj.get_object_type() != WALL) {
+				enemyPosX[i] += dx[r];
+				enemyPosY[i] += dy[r];
+				enemyPosX[i] %= g.get_width();
+				enemyPosY[i] %= g.get_height();
+			}
+		}
+		timer = 0;
+		display();
+	}
 }
 
 int main(int argc, char* argv[]) {
@@ -152,6 +186,10 @@ int main(int argc, char* argv[]) {
 		for (int j = 0; j < m; ++j) {
 			object tmp = g.get_object(i, j);
 			cout << tmp.get_object_type();
+			if (tmp.get_object_type() == ENEMY) {
+				enemyPosX.push_back(i);
+				enemyPosY.push_back(j);
+			}
 		}
 		cout << endl;
 	}
