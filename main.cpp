@@ -19,12 +19,15 @@ static float foodRadius = 0.05;
 static float enemyRadius = 0.1;
 static double timer = 0.0;
 int score = 0;
+int lives = 3;
 int step = 1;
 grid g("maze.txt");
 //float charMoveX = 0;
 //float charMoveY = 0;
 int charPosX;
 int charPosY;
+int charInitX;
+int charInitY;
 
 int dx[] = {0, 0, 1, -1};
 int dy[] = { 1, -1, 0, 0 };
@@ -161,6 +164,13 @@ void keyboard(unsigned char key, int x, int y) {
 		g.set_object(charPosX, charPosY, tmp);
 		score++;
 	}
+	for (int i = 0; i < enemyPosX.size(); i++) {
+		if (charPosX == enemyPosX[i] && charPosY == enemyPosY[i]) {
+			lives--;
+			charPosX = charInitX;
+			charPosY = charInitY;
+		}
+	}
 	glutPostRedisplay();
 }
 
@@ -204,6 +214,8 @@ int main(int argc, char* argv[]) {
 			if (tmp.get_object_type() == PLAYER) {
 				charPosX = i;
 				charPosY = j;
+				charInitX = i;
+				charInitY = j;
 			}
 		}
 		cout << endl;
