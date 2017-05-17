@@ -20,6 +20,7 @@ static float enemyRadius = 0.1;
 static double timer = 0.0;
 int score = 0;
 int lives = 3;
+int totalCoins = 0;
 int step = 1;
 grid g("maze.txt");
 //float charMoveX = 0;
@@ -95,7 +96,7 @@ void display() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-	if (lives > 0) {
+	if (lives > 0 && score < totalCoins) {
 		glPushMatrix();
 
 		int index = 0;
@@ -219,6 +220,9 @@ int main(int argc, char* argv[]) {
 				charPosY = j;
 				charInitX = i;
 				charInitY = j;
+			}
+			if (tmp.get_object_type() == COIN) {
+				totalCoins++;
 			}
 		}
 		cout << endl;
