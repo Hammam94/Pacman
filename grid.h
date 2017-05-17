@@ -17,6 +17,8 @@ public:
 	int get_width();
 	int get_height();
 
+	void set_object(int, int, object);
+
 	object get_object(int, int);
 
 private:

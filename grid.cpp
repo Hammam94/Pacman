@@ -44,3 +44,8 @@ int grid::get_height() {
 object grid::get_object(int i, int j) {
 	return matrix[i][j];
 }
+
+
+void grid::set_object(int i, int j, object o) {
+	matrix[i][j] = o;
+}

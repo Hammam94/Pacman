@@ -18,6 +18,7 @@ static float wallSide = 0.25;
 static float foodRadius = 0.05;
 static float enemyRadius = 0.1;
 static double timer = 0.0;
+int score = 0;
 int step = 1;
 grid g("maze.txt");
 //float charMoveX = 0;
@@ -154,6 +155,11 @@ void keyboard(unsigned char key, int x, int y) {
 	if (tmp.get_object_type() == WALL) {
 		charPosX = oldX;
 		charPosY = oldY;
+	}
+	if (tmp.get_object_type() == COIN) {
+		tmp.set_object_type(EMPTY_OBJECT);
+		g.set_object(charPosX, charPosY, tmp);
+		score++;
 	}
 	glutPostRedisplay();
 }
