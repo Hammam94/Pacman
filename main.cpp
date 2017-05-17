@@ -18,10 +18,12 @@ static float wallSide = 0.25;
 static float foodRadius = 0.05;
 static float enemyRadius = 0.1;
 static double timer = 0.0;
-float step;
+int step = 1;
 grid g("maze.txt");
-float charMoveX = 0;
-float charMoveY = 0;
+//float charMoveX = 0;
+//float charMoveY = 0;
+int charPosX;
+int charPosY;
 
 int dx[] = {0, 0, 1, -1};
 int dy[] = { 1, -1, 0, 0 };
@@ -33,7 +35,7 @@ void drawCharacter(GLfloat x, GLfloat y) {
 	glBegin(GL_POLYGON);
 	glColor3f(1.0, 1.0, 0.0);
 	for (double i = 0; i < 2 * PI; i += PI / 50)
-		glVertex3f(x + charMoveX + (cos(i) * characterRadius), y + charMoveY + (sin(i) * characterRadius), 0.0);
+		glVertex3f(x + (cos(i) * characterRadius), y + (sin(i) * characterRadius), 0.0);
 	glEnd();
 }
 
@@ -77,7 +79,6 @@ GLfloat getCoordinate(int c, int dim) {
 	dim = dim - 1;
 	if (c == dim / 2) return 0;
 	float diff = 2.0 / (dim / 2);
-	step = diff;
 	int t = c < (dim / 2) ? c : (dim / 2) - (c - (dim / 2));
 	GLfloat place = 2.0 - (t * diff);
 	place = c < (dim / 2) ? -1 * place : place;
@@ -108,7 +109,7 @@ void display() {
 				drawFood(getCoordinate(j, g.get_height()), -1 * getCoordinate(i, g.get_width()));
 				break;
 			case PLAYER:
-				drawCharacter(getCoordinate(j, g.get_height()), -1 * getCoordinate(i, g.get_width()));
+				drawCharacter(getCoordinate(charPosY, g.get_height()), -1 * getCoordinate(charPosX, g.get_width()));
 				break;
 			case ENEMY:
 				drawEnemy(getCoordinate(enemyPosY[index], g.get_height()), -1 * getCoordinate(enemyPosX[index], g.get_width()));
@@ -131,19 +132,19 @@ void keyboard(unsigned char key, int x, int y) {
 	switch (key)
 	{
 	case 'w':
-		charMoveY += step;
+		charPosX -= step;
 		glutPostRedisplay();
 		break;
 	case 's':
-		charMoveY -= step;
+		charPosX += step;
 		glutPostRedisplay();
 		break;
 	case 'a':
-		charMoveX -= step;
+		charPosY -= step;
 		glutPostRedisplay();
 		break;
 	case 'd':
-		charMoveX += step;
+		charPosY += step;
 		glutPostRedisplay();
 		break;
 	case 27:
@@ -189,6 +190,10 @@ int main(int argc, char* argv[]) {
 			if (tmp.get_object_type() == ENEMY) {
 				enemyPosX.push_back(i);
 				enemyPosY.push_back(j);
+			}
+			if (tmp.get_object_type() == PLAYER) {
+				charPosX = i;
+				charPosY = j;
 			}
 		}
 		cout << endl;
